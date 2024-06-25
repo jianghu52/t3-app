@@ -1,4 +1,4 @@
-import { ActionIcon, Card, Group, Text, TextInput } from "@mantine/core";
+import { ActionIcon, Button, Card, Group, Text, TextInput } from "@mantine/core";
 import { type NextPage } from "next";
 
 import { Layout } from "~/components/Layout";
@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import { Trash } from "tabler-icons-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useForm, zodResolver } from "@mantine/form";
+import { createTodoSchema } from "~/schema/todo";
 
 const Todo: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -16,7 +17,7 @@ const Todo: NextPage = () => {
       title: "",
       description: "",
     },
-    //validate:zodResolver(createTodoSchema)
+    validate:zodResolver(createTodoSchema)
   });
   const createTodo = api.todo.create.useMutation();
   const todos = api.todo.getAll.useQuery();
@@ -26,16 +27,18 @@ const Todo: NextPage = () => {
   return (
     <Layout tile="Todo App">
       <h1>Todo App</h1>
+      
       <div>
         <p className="text-center text-2xl text-white">
           {sessionData && <span>Logged in as {sessionData.user.name}</span>}
         </p>
-        <button
-          className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+        <Button 
+          color="rgba(237, 109, 109, 1)"
           onClick={sessionData ? () => signOut() : () => signIn()}
         >
+            
           {sessionData ? "Sign Out" : "Sign In"}
-        </button>
+        </Button >
         <form onSubmit={form.onSubmit((data) => {
             createTodo.mutate(data);
             form.reset();
@@ -45,6 +48,14 @@ const Todo: NextPage = () => {
               placeholder="Enter title"
               {...form.getInputProps("title")}
             />
+            <TextInput
+              label="Description"
+              placeholder="Enter description"
+              {...form.getInputProps("description")}
+            />
+            <button type="submit" className="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              New Task
+            </button>
           </form>
         {todos.data?.map((todo) => (
           <Card withBorder key={todo.id} mt={"sm"}>

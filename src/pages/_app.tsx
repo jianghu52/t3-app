@@ -4,7 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { MantineProvider } from '@mantine/core';
 import { api } from "~/utils/api";
-
+import '@mantine/core/styles.css';
 import "~/styles/globals.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -15,7 +15,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
         
       <main className={GeistSans.className}>
-      <MantineProvider defaultColorScheme="dark">
+      <MantineProvider defaultColorScheme="light">
         <Component {...pageProps} />
         </MantineProvider>
       </main>
