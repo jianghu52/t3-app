@@ -29,6 +29,7 @@ const Todo: NextPage = () => {
       <h1>Todo App</h1>
       
       <div>
+        
         <p className="text-center text-2xl text-white">
           {sessionData && <span>Logged in as {sessionData.user.name}</span>}
         </p>
@@ -61,12 +62,13 @@ const Todo: NextPage = () => {
           <Card withBorder key={todo.id} mt={"sm"}>
             <Group>
               <Text>{todo.title}</Text>
+              <textarea defaultValue={todo.description}></textarea>
               <ActionIcon
                 onClick={() => deletetodo.mutate({ id: todo.id })}
                 color="red"
                 variant="transparent"
               >
-                <Trash />
+                
                 Delete
               </ActionIcon>
             </Group>

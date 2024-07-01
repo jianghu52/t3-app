@@ -14,7 +14,18 @@ export const todoRouter = createTRPCRouter({
     }),
     getAll:publicProcedure
     .query(async ({  ctx }) => {        
-        return await ctx.db.todo.findMany()
+        return await ctx.db.todo.findMany({
+            select: {
+                id: true,
+                title: true,
+                description: true,
+                owner: {
+                    select: {   
+                        name: true
+                    }
+                }
+            }
+        })
     }),
     create:publicProcedure
     .input(createTodoSchema)
@@ -42,8 +53,8 @@ export const todoRouter = createTRPCRouter({
             where: { id: input.id },
             data: {
                 title: input.title,
-                description: input.description,
-                ownerId: ctx.session.user.id
+                description: input.description
+                
             }
         })
         return newtodo
